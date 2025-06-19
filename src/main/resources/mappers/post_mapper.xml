@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.koreait.dbms_study.mapper.PostMapper">
+    <insert id="insert">
+        insert into
+        post_tb
+        values (0, #{title},#{content}, #{userId}, now(), now());
+    </insert>
+    <select id="getPostList">
+        select
+        *
+        from
+        post_tb
+    </select>
+    <select id="getPostByUserId">
+        select
+        *
+        from
+        Post_tb
+        where
+        user_id=#{userId};
+    </select>
+    <update id="editPost">
+        update
+        post_tb
+        set
+        title =#{title},
+        content =#{content},
+        update_dt = now()
+        where
+        post_tb =#{userId}
+    </update>
+    <delete id="removePost">
+        delete from
+        post_tb
+        where
+        post_id = #{userId}
+    </delete>
+</mapper>

@@ -1,6 +1,7 @@
 package com.koreait.dbms_study.mapper;
 
 import com.koreait.dbms_study.entity.User;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -13,4 +14,10 @@ public interface UserMapper {
     List<User> getUserList();
 
     Optional<User> getUserByUserId(Integer userId);
+
+    int editUser(User user);
+
+    int removeUser(Integer userId);
+
+
 }
