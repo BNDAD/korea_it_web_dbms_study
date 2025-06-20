@@ -14,6 +14,7 @@ public class EditPostReqDto {
     private String content;
 
 
+
     public Post toEntity() {
         return Post.builder()
                 .postId(this.postId)

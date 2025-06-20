@@ -11,12 +11,10 @@ public class AddUserReqDto {
     private String username;
     private String email;
 
-    public User toEntity(AddUserReqDto addUserReqDto) {
+    public User toEntity() {
         return User.builder()
                 .username(this.username)
                 .email(this.email)
                 .build();
     }
-
-
 }

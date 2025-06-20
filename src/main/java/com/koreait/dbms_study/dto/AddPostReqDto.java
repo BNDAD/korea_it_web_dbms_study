@@ -1,8 +1,6 @@
 package com.koreait.dbms_study.dto;
 
-
 import com.koreait.dbms_study.entity.Post;
-import com.koreait.dbms_study.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -20,5 +18,4 @@ public class AddPostReqDto {
                 .userId(this.userId)
                 .build();
     }
-
 }

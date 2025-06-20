@@ -22,8 +22,7 @@ public class UserService {
 
     public Map<String, String> addUser(AddUserReqDto addUserReqDto) {
         Map<String, String> response = new HashMap<>();
-        int result = userRepository.addUser(addUserReqDto.toEntity(addUserReqDto));
-
+        int result = userRepository.addUser(addUserReqDto.toEntity());
         if (result == 1) {
             response.put("status", "success");
             response.put("message", "추가 성공");
@@ -38,7 +37,6 @@ public class UserService {
         return userRepository.getUserList();
     }
 
-
     public Map<String, Object> getUserByUserId(Integer userId) {
         Map<String, Object> response = new HashMap<>();
         Optional<User> user = userRepository.getUserByUserId(userId);
@@ -48,35 +46,31 @@ public class UserService {
         }
         response.put("user", user);
         return response;
+
     }
 
     public ApiRespDto<User> editUser(EditUserReqDto editUserReqDto) {
         Optional<User> user = userRepository.getUserByUserId(editUserReqDto.getUserId());
-        if (user.isEmpty()) {
+        if(user.isEmpty()) {
             return new ApiRespDto<>("해당 유저가 존재하지 않습니다.", null);
         }
-        int result = userRepository.editUser(editUserReqDto.toEntity());
-        if (result == 0) {
 
+        int result = userRepository.editUser(editUserReqDto.toEntity());
+        if(result == 0) {
             return new ApiRespDto<>("문제가 발생했습니다.", null);
         }
-
-        return new ApiRespDto<>("성공적으로 수정이 완료 되었습니다.", null);
-
+        return new ApiRespDto<>("성공적으로 수정이 완료되었습니다.", null);
     }
 
     public ApiRespDto<Integer> removeUser(Integer userId) {
         Optional<User> user = userRepository.getUserByUserId(userId);
-        if (user.isEmpty()) {
+        if(user.isEmpty()) {
             return new ApiRespDto<>("해당 유저가 존재하지 않습니다.", null);
         }
         int result = userRepository.removeUser(userId);
-        if (result == 0) {
+        if(result == 0) {
             return new ApiRespDto<>("문제가 발생했습니다.", result);
-
         }
         return new ApiRespDto<>("성공적으로 삭제 되었습니다.", result);
     }
-    
-
 }

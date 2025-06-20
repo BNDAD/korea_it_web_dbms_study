@@ -2,45 +2,94 @@ package com.koreait.dbms_study.service;
 
 
 import com.koreait.dbms_study.dto.AddPostReqDto;
+import com.koreait.dbms_study.dto.ApiRespDto;
 import com.koreait.dbms_study.dto.EditPostReqDto;
 import com.koreait.dbms_study.entity.Post;
+import com.koreait.dbms_study.entity.User;
 import com.koreait.dbms_study.repository.PostRepository;
 import com.koreait.dbms_study.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class PostService {
-    private final PostRepository postRepository;
-    private final UserRepository userRepository;
 
-    public void addPost(AddPostReqDto dto) {
-        if (!userRepository.existsById(dto.getUserId())) {
-            throw new IllegalArgumentException("존재하지 않는 user_id입니다.");
+    @Autowired
+    private PostRepository postRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    public ApiRespDto<?> addPost(AddPostReqDto addPostReqDto) {
+        try {
+            Optional<User> optionalUser = userRepository.getUserByUserId(addPostReqDto.getUserId());
+            if (optionalUser.isEmpty()) {
+                return new ApiRespDto<>("존재하지 않는 유저입니다.", null);
+            }
+            int result = postRepository.addPost(addPostReqDto.toEntity());
+
+            if (result == 0) {
+                return new ApiRespDto<>("문제가 발생했습니다.", null);
+            }
+            return new ApiRespDto<>("정상적으로 게시하였습니다.", null);
+        } catch (Exception e) {
+            return new ApiRespDto<>("문제가 발생했습니다.", e.getMessage());
         }
-        postRepository.save(dto.toEntity());
     }
 
-    public Post getPost(Integer postId) {
-        return postRepository.findById(postId);
+    public ApiRespDto<Object> getPostByPostId(Integer postId) {
+        try {
+            Optional<Post> optionalPost = postRepository.getPostByPostId(postId);
+            if (optionalPost.isEmpty()) {
+                return new ApiRespDto<>("해당 게시물이 없습니다.", null);
+            }
+            return new ApiRespDto<>("조회 성공", optionalPost.get());
+        } catch (Exception e) {
+            return new ApiRespDto<>("문제가 발생했습니다", e.getMessage());
+        }
     }
 
-    public List<Post> getPosts() {
-        return postRepository.findAll();
+    public ApiRespDto<?> getPostList() {
+        try {
+            List<Post> postList = postRepository.getPostList();
+            return new ApiRespDto<>("조회 완료", postList);
+        } catch (Exception e) {
+            return new ApiRespDto<>("문제가 발생했습니다.", e.getMessage());
+        }
     }
 
-    public void editPost(EditPostReqDto dto) {
-        Post post = postRepository.findById(dto.getPostId());
-        if (post == null) throw new IllegalArgumentException("존재하지 않는 post입니다.");
-        Post updated = dto.toEntity();
-        updated.setUserId(post.getUserId()); // userId는 변경 불가
-        postRepository.update(updated);
+    public ApiRespDto<?> editPost(EditPostReqDto editPostReqDto) {
+        try {
+            Optional<Post> optionalPost = postRepository.getPostByPostId(editPostReqDto.getPostId());
+            if (optionalPost.isEmpty()) {
+                return new ApiRespDto<>("해당 게시물은 존재하지 않습니다.", null);
+            }
+            int result = postRepository.editPost(editPostReqDto.toEntity());
+            if (result != 1) {
+                return new ApiRespDto<>("문제가 발생했습니다.", result);
+            }
+            return new ApiRespDto<>("수정 성공", result);
+        } catch (Exception e) {
+            return new ApiRespDto<>("문제가 발생했습니다.", e.getMessage());
+        }
+    }
+    public ApiRespDto<?> removePost(Integer postId) {
+        try {
+            Optional<Post> optionalPost = postRepository.getPostByPostId(postId);
+            if(optionalPost.isEmpty()){
+                return new ApiRespDto<>("해당 게시물은 존재하지 않습니다.", null);
+            }
+            int result = postRepository.removePost(postId);
+            if(result != 1) {
+                return new ApiRespDto<>("문제가 발생했습니다.", result);
+            }
+            return new ApiRespDto<>("삭제 성공", result);
+        } catch (Exception e) {
+            return new ApiRespDto<>("문제가 발생했습니다.", e.getMessage());
+        }
     }
 
-    public void deletePost(Integer postId) {
-        postRepository.delete(postId);
-    }
 }

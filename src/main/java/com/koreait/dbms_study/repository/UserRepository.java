@@ -6,7 +6,6 @@ import com.koreait.dbms_study.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import javax.swing.plaf.PanelUI;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,8 +35,5 @@ public class UserRepository {
         return userMapper.removeUser(userId);
     }
 
-    // [추가] user_id 존재 여부 확인 메서드
-    public boolean existsById(Integer userId) {
-        return userMapper.existsById(userId) > 0;
-    }
+
 }
