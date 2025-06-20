@@ -20,20 +20,20 @@
 
     <select id="getPostList">
         select
-            *
+        *
         from
-            post_tb
+        post_tb
     </select>
 
     <update id="editPost">
-        update from
-            post_tb
+        update
+        post_tb
         set
-            title = #{title},
-            content = #{content},
-            update_dt = now()
+        title = #{title},
+        content = #{content},
+        update_dt = now()
         where
-            post_id = #{postId}
+        post_id = #{postId}
     </update>
 
     <delete id="removePost">
