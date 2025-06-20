@@ -13,26 +13,31 @@ import java.util.Optional;
 @Repository
 public class UserRepository {
 
-@Autowired
-private UserMapper userMapper;
-public int addUser(User user) {
-    return userMapper.insert(user);
-}
+    @Autowired
+    private UserMapper userMapper;
 
-public List<User> getUserList() {
-    return userMapper.getUserList();
-}
+    public int addUser(User user) {
+        return userMapper.insert(user);
+    }
 
+    public List<User> getUserList() {
+        return userMapper.getUserList();
+    }
 
-public Optional<User> getUserByUserId(Integer userId) {
-    return userMapper.getUserByUserId(userId);
-}
+    public Optional<User> getUserByUserId(Integer userId) {
+        return userMapper.getUserByUserId(userId);
+    }
 
-public int editUser(User user) {
-    return userMapper.editUser(user);
-}
+    public int editUser(User user) {
+        return userMapper.editUser(user);
+    }
 
-public int removeUser(Integer userId) {
-    return userMapper.removeUser(userId);
-}
+    public int removeUser(Integer userId) {
+        return userMapper.removeUser(userId);
+    }
+
+    // [추가] user_id 존재 여부 확인 메서드
+    public boolean existsById(Integer userId) {
+        return userMapper.existsById(userId) > 0;
+    }
 }

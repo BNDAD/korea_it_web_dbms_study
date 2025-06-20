@@ -14,7 +14,7 @@ public class Post {
     private Integer postId;
     private String title;
     private String content;
-
+    private Integer userId;
     private LocalDateTime createDt;
     private LocalDateTime updateDt;
 }

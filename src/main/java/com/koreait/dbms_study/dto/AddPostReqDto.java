@@ -11,11 +11,14 @@ import lombok.Data;
 public class AddPostReqDto {
     private String title;
     private String content;
+    private Integer userId;
 
-    public Post toEntity(AddPostReqDto addPostReqDto) {
+    public Post toEntity() {
         return Post.builder()
                 .title(this.title)
                 .content(this.content)
+                .userId(this.userId)
                 .build();
     }
+
 }

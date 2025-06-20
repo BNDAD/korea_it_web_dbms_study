@@ -3,6 +3,7 @@ package com.koreait.dbms_study.mapper;
 import com.koreait.dbms_study.entity.User;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,5 +20,7 @@ public interface UserMapper {
 
     int removeUser(Integer userId);
 
+    @Select("SELECT COUNT(*) FROM user_tb WHERE user_id = #{userId}")
+    int existsById(Integer userId);
 
 }
