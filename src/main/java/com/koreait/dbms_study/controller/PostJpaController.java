@@ -1,6 +1,7 @@
 package com.koreait.dbms_study.controller;
 
 import com.koreait.dbms_study.dto.AddPostReqDto;
+import com.koreait.dbms_study.dto.EditPostReqDto;
 import com.koreait.dbms_study.service.PostJpaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,4 +31,15 @@ public class PostJpaController {
     public ResponseEntity<?> getPostList() {
         return ResponseEntity.ok(postJpaService.getPostList());
     }
+
+    @PostMapping("/edit")
+    public ResponseEntity<?> editPost(@RequestBody EditPostReqDto editPostReqDto) {
+        return ResponseEntity.ok(postJpaService.editPost(editPostReqDto));
+    }
+
+    @PostMapping("/remove")
+    public ResponseEntity<?> removePost(@RequestParam Integer postId) {
+        return ResponseEntity.ok(postJpaService.removePost(postId));
+    }
+
 }
